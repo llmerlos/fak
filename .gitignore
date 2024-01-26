@@ -1,3 +1,4 @@
 .vscode/
 .direnv/
 .main.ncl.json
+build/
