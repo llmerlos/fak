@@ -22,11 +22,19 @@ let _FUNC   = 5 in
 let _AJST   = 6 in 
 
 let macro_kvm = fun keycode =>
-  let steps =
-    macro.tap mt.rctl
-    |> macro.tap mt.rctl
-    |> macro.tap keycode
-  in
+  let steps = [
+    macro.tap mt.rctl,
+    macro.tap mt.rctl,
+    macro.tap keycode,
+  ] in
+  macro.make steps
+in
+
+let macro_qa = fun keycode =>
+  let steps = [
+    macro.tap keycode,
+    macro.tap (TO _BASE),
+  ] in
   macro.make steps
 in
 
@@ -47,29 +55,16 @@ let cu = {
   E_EUR = mt.ralt & kc.N5,
   E_PND = mt.ralt & kc.N4,
   E_DEG = mt.ralt & kc.SCLN,
-  E_AOB = mt.ralt & kc.GRV,
-  E_ATC = mt.ralt & kc.QUOT,
-  E_ACF = mt.ralt & kc.N6,
-  E_ADI = mt.ralt & mt.lsft & ks.DQUO,
-  E_ATI = mt.ralt & mt.lsft & kc.GRV,
-  E_SMT = mt.ralt & mt.lsft & kc.M,
-  E_SLI = mt.ralt & kc.BSLS,
+  E_AOB = macro_qa (mt.ralt & kc.GRV),
+  E_ATC = macro_qa (mt.ralt & kc.QUOT),
+  E_ACF = macro_qa (mt.ralt & kc.N6),
+  E_ADI = macro_qa (mt.ralt & mt.lsft & ks.DQUO),
+  E_ATI = macro_qa (mt.ralt & mt.lsft & kc.GRV),
+  E_SMT = macro_qa (mt.ralt & mt.lsft & kc.M),
+  E_SLI = macro_qa (mt.ralt & kc.BSLS),
   KVM1 = macro_kvm kc.N1,
   KVM2 = macro_kvm kc.N2,
 } in
-
-# let qa_macro = fun keycode =>
-#   let steps =
-#     macro.tap keycode
-#     |> macro.tap (TO _BASE)
-#   in
-#   macro.make steps
-# in
-# 
-# let qa = {
-#   E_AOB = qa_macro cu.E_AOB
-# } in
-
 
 let keymap = {
   conditional_layers = {
@@ -122,7 +117,7 @@ let keymap = {
     [
       TTTTTTTT, cu.E_IEX, cu.E_ACF, cu.E_LL,  cu.D_SHS, me.VOLU,        me.PREV,  kc.INS,   kc.PSCR,  kc.SCRL,  kc.PAUS,  TTTTTTTT, 
       TTTTTTTT, kc.CAPS,  cu.E_OM,  cu.E_OF,  cu.D_MUT, me.VOLD,        me.PLAY,  TO _BASE, TO _GAME, XXXXXXXX, kc.APP,   md.rsft, 
-      TTTTTTTT, kc.NUBS,  cu.E_ATI, cu.E_DEG, cu.D_SIL, me.MUTE,        me.NEXT,  TTTTTTTT, TTTTTTTT, XXXXXXXX, cu.E_IQM, md.rctl, 
+      TTTTTTTT, kc.NUBS,  cu.E_ATI, cu.E_DEG, cu.D_SIL, me.MUTE,        me.NEXT,  cu.KVM1,  cu.KVM2,  XXXXXXXX, cu.E_IQM, md.rctl, 
                           md.lalt,  md.lsft,  TTTTTTTT, MO _RISE,       MO _LOWR, TTTTTTTT, md.ralt,  md.rgui,                     
     ],
   ]
