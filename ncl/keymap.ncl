@@ -75,28 +75,28 @@ let keymap = {
     [
       kc.TAB,   kc.Q,     kc.W,     kc.E,     kc.R,     kc.T,           kc.Y,     kc.U,     kc.I,     kc.O,     kc.P,     kc.ENT,     
       md.lsft,  kc.A,     kc.S,     kc.D,     kc.F,     kc.G,           kc.H,     kc.J,     kc.K,     kc.L,     kc.SCLN,  kc.QUOT,     
-      md.lctl,  kc.Z,     kc.X,     kc.C,     kc.V,     kc.B,           kc.N,     kc.M,     kc.COMM,  kc.DOT,   ks.QUES,  kc.DEL,     
-                          md.lgui,  md.lalt,  kc.SPC,   MO _RISE,       MO _LOWR, kc.BSPC,  md.rsft,  md.ralt,                     
+      md.lctl,  kc.Z,     kc.X,     kc.C,     kc.V,     kc.B,           kc.N,     kc.M,     kc.COMM,  kc.DOT,   kc.SLSH,  md.rsft,     
+                          md.lgui,  md.lalt,  kc.SPC,   MO _RISE,       MO _LOWR, kc.BSPC,  kc.DEL,  md.ralt,                     
     ],
     # GAME
     [
       kc.TAB,   kc.Q,     kc.W,     kc.E,     kc.R,     kc.T,           kc.Y,     kc.U,     kc.I,     kc.O,     kc.P,     kc.ENT,     
       md.lsft,  kc.A,     kc.S,     kc.D,     kc.F,     kc.G,           kc.H,     kc.J,     kc.K,     kc.L,     kc.SCLN,  kc.QUOT,     
-      md.lctl,  kc.Z,     kc.X,     kc.C,     kc.V,     kc.B,           kc.N,     kc.M,     cu.VD_L,  cu.VD_U,  cu.VD_R,  kc.DEL,     
-                          md.lgui,  md.lalt,  kc.SPC,   MO _GNUM,       MO _LOWR, kc.BSPC,  md.rsft,  md.ralt,                     
+      md.lctl,  kc.Z,     kc.X,     kc.C,     kc.V,     kc.B,           kc.N,     kc.M,     cu.VD_L,  cu.VD_U,  cu.VD_R,  md.rsft,     
+                          md.lgui,  md.lalt,  kc.SPC,   MO _GNUM,       MO _LOWR, kc.BSPC,  kc.DEL,  md.ralt,                     
     ],
     # GNUM
     [
-      TTTTTTTT, kc.N1,    TTTTTTTT, kc.N2,    kc.N3,    TTTTTTTT,       TTTTTTTT, TTTTTTTT, kc.UP,    TTTTTTTT, TTTTTTTT, TTTTTTTT, 
+      TTTTTTTT, kc.N1,    TTTTTTTT, kc.N2,    kc.N3,    kc.N4,          TTTTTTTT, TTTTTTTT, kc.UP,    TTTTTTTT, TTTTTTTT, TTTTTTTT, 
       TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT,       TTTTTTTT, kc.LEFT,  kc.DOWN,  kc.RIGHT, TTTTTTTT, TTTTTTTT, 
-      TTTTTTTT, kc.N4,    kc.N5,    kc.N6,    TTTTTTTT, kc.ESC,         TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, 
+      TTTTTTTT, TTTTTTTT, kc.N5,    kc.N6,    TTTTTTTT, kc.ESC,         TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, 
                           TTTTTTTT, TTTTTTTT, TTTTTTTT, MO _GNUM,       TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT,                     
     ],
     # LOWR
     [
       TTTTTTTT, ks.EXLM,  ks.AT,    ks.HASH,  ks.DLR,   ks.PERC,        cu.E_AOB, kc.N7,    kc.N8,    kc.N9,    cu.E_ATC, TTTTTTTT,   
-      TTTTTTTT, ks.TILD,  kc.MINS,  ks.PLUS,  kc.EQL,   cu.E_PND,       cu.E_ADI, kc.N4,    kc.N5,    kc.N6,    kc.N0,    kc.DOT,    
-      TTTTTTTT, kc.GRV,   kc.SLSH,  ks.ASTR,  ks.UNDS,  cu.E_EUR,       cu.E_NN,  kc.N1,    kc.N2,    kc.N3,    MO _FUNC, kc.COMM,   
+      TTTTTTTT, ks.TILD,  kc.MINS,  ks.PLUS,  kc.EQL,   cu.E_PND,       cu.E_ADI, kc.N4,    kc.N5,    kc.N6,    kc.N0,    TTTTTTTT,    
+      TTTTTTTT, kc.GRV,   kc.SLSH,  ks.ASTR,  ks.UNDS,  cu.E_EUR,       cu.E_NN,  kc.N1,    kc.N2,    kc.N3,    MO _FUNC, TTTTTTTT,   
                           TTTTTTTT, TTTTTTTT, TTTTTTTT, MO _RISE,       MO _LOWR, TTTTTTTT, TTTTTTTT, TTTTTTTT,                     
     ],
     # RISE
@@ -117,8 +117,8 @@ let keymap = {
     [
       TTTTTTTT, cu.E_IEX, cu.E_ACF, cu.E_LL,  cu.D_SHS, me.VOLU,        me.PREV,  kc.INS,   kc.PSCR,  kc.SCRL,  kc.PAUS,  TTTTTTTT, 
       TTTTTTTT, kc.CAPS,  cu.E_OM,  cu.E_OF,  cu.D_MUT, me.VOLD,        me.PLAY,  TO _BASE, TO _GAME, XXXXXXXX, kc.APP,   md.rsft, 
-      TTTTTTTT, kc.NUBS,  cu.E_ATI, cu.E_DEG, cu.D_SIL, me.MUTE,        me.NEXT,  cu.KVM1,  cu.KVM2,  XXXXXXXX, cu.E_IQM, md.rctl, 
-                          md.lalt,  md.lsft,  TTTTTTTT, MO _RISE,       MO _LOWR, TTTTTTTT, md.ralt,  md.rgui,                     
+      md.lsft,  kc.NUBS,  cu.E_ATI, cu.E_DEG, cu.D_SIL, me.MUTE,        me.NEXT,  cu.KVM1,  cu.KVM2,  XXXXXXXX, cu.E_IQM, md.rctl, 
+                          md.lalt,  TTTTTTTT, TTTTTTTT, MO _RISE,       MO _LOWR, TTTTTTTT, md.ralt,  md.rgui,                     
     ],
   ]
 } in
