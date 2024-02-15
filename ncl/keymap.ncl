@@ -38,6 +38,13 @@ let macro_qa = fun keycode =>
   macro.make steps
 in
 
+let qp = fun keycode =>
+  let steps = [
+    macro.tap keycode,
+  ] in
+  macro.make steps
+in
+
 let cu = {
   D_MUT = mt.lsft & mt.lctl & kc.F9,
   D_SIL = mt.lsft & mt.lctl & kc.F11,
@@ -80,36 +87,36 @@ let keymap = {
     ],
     # GAME
     [
-      kc.TAB,   kc.Q,     kc.W,     kc.E,     kc.R,     kc.T,           kc.Y,     kc.U,     kc.I,     kc.O,     kc.P,     kc.ENT,     
-      md.lsft,  kc.A,     kc.S,     kc.D,     kc.F,     kc.G,           kc.H,     kc.J,     kc.K,     kc.L,     kc.SCLN,  kc.QUOT,     
-      md.lctl,  kc.Z,     kc.X,     kc.C,     kc.V,     kc.B,           kc.N,     kc.M,     cu.VD_L,  cu.VD_U,  cu.VD_R,  kc.DEL,     
-                          md.lgui,  md.lalt,  kc.SPC,   MO _GNUM,       MO _LOWR, kc.BSPC,  md.rsft,  md.ralt,                     
+      TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT,       TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, 
+      TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT,       TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, 
+      TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT,       TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, 
+                          TTTTTTTT, TTTTTTTT, TTTTTTTT, MO _GNUM,       TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT,                     
     ],
     # GNUM
     [
-      kc.ESC,   kc.N1,    TTTTTTTT, kc.N2,    kc.N3,    kc.N4,          TTTTTTTT, TTTTTTTT, kc.UP,    TTTTTTTT, TTTTTTTT, TTTTTTTT, 
-      TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT,       TTTTTTTT, kc.LEFT,  kc.DOWN,  kc.RIGHT, TTTTTTTT, TTTTTTTT, 
+      kc.ESC,   kc.N1,    TTTTTTTT, kc.N2,    kc.N3,    kc.N4,          cu.VD_U,  TTTTTTTT, kc.UP,    TTTTTTTT, cu.VD_R,  TTTTTTTT, 
+      TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT,       cu.VD_L,  kc.LEFT,  kc.DOWN,  kc.RIGHT, TTTTTTTT, TTTTTTTT, 
       TTTTTTTT, MO _FUNC, kc.N5,    kc.N6,    TTTTTTTT, TTTTTTTT,       TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, 
                           TTTTTTTT, TTTTTTTT, TTTTTTTT, MO _GNUM,       TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT,                     
     ],
     # LOWR
     [
       TTTTTTTT, ks.EXLM,  ks.AT,    ks.HASH,  ks.DLR,   ks.PERC,        cu.E_AOB, kc.N7,    kc.N8,    kc.N9,    cu.E_ATC, TTTTTTTT,   
-      TTTTTTTT, ks.TILD,  kc.MINS,  ks.PLUS,  kc.EQL,   cu.E_PND,       cu.E_ADI, kc.N4,    kc.N5,    kc.N6,    kc.N0,    kc.DOT,    
-      TTTTTTTT, kc.GRV,   kc.SLSH,  ks.ASTR,  ks.UNDS,  cu.E_EUR,       cu.E_NN,  kc.N1,    kc.N2,    kc.N3,    MO _FUNC, kc.COMM,   
+      TTTTTTTT,ks.TILD,qp kc.MINS,qp ks.PLUS,qp kc.EQL, cu.E_PND,       cu.E_ADI, kc.N4,    kc.N5,    kc.N6,    kc.N0,    kc.DOT,    
+      TTTTTTTT, kc.GRV,qp kc.SLSH,qp ks.ASTR,qp ks.UNDS,cu.E_EUR,       cu.E_NN,  kc.N1,    kc.N2,    kc.N3,    MO _FUNC, kc.COMM,   
                           TTTTTTTT, TTTTTTTT, TTTTTTTT, MO _RISE,       MO _LOWR, TTTTTTTT, TTTTTTTT, TTTTTTTT,                     
     ],
     # RISE
     [
       TTTTTTTT, cu.VD_L,  kc.HOME,  kc.UP,    kc.END,   cu.VD_U,        ks.CIRC,  ks.AMPR,  ks.ASTR,  ks.LPRN,  ks.RPRN,  TTTTTTTT,   
-      TTTTTTTT, kc.ESC,   kc.LEFT,  kc.DOWN,  kc.RIGHT, cu.VD_R,        ks.LCBR,  kc.LBRC,  kc.RBRC,  ks.RCBR,  ks.COLN,  ks.DQUO,    
-      TTTTTTTT, MO _FUNC, kc.PGDN,  cu.E_CC,  kc.PGUP,  kc.DEL,         kc.BSLS,  ks.PIPE,  ks.LABK,  ks.RABK,  ks.QUES,  TTTTTTTT,   
+      TTTTTTTT, kc.ESC,   kc.LEFT,  kc.DOWN,  kc.RIGHT, cu.VD_R,    qp ks.LCBR,qp kc.LBRC,qp kc.RBRC,qp ks.RCBR,ks.COLN,  ks.DQUO,    
+      TTTTTTTT, MO _FUNC, kc.PGDN,  cu.E_CC,  kc.PGUP,  kc.DEL,     qp kc.BSLS,qp ks.PIPE,  ks.LABK,  ks.RABK,  ks.QUES,  TTTTTTTT,   
                           TTTTTTTT, TTTTTTTT, TTTTTTTT, MO _RISE,       MO _LOWR, TTTTTTTT, TTTTTTTT, TTTTTTTT,                     
     ],
     # FUNC
     [
       TTTTTTTT, fk.BOOT,  kc.F7,    kc.F8,    kc.F9,    kc.F12,         kc.F12,   kc.F7,    kc.F8,    kc.F9,    fk.BOOT,  TTTTTTTT, 
-      TTTTTTTT, XXXXXXXX, kc.F4,    kc.F5,    kc.F6,    kc.F11,         kc.F11,   kc.F4,    kc.F5,    kc.F6,    XXXXXXXX, TTTTTTTT, 
+      TTTTTTTT, fk.RESET, kc.F4,    kc.F5,    kc.F6,    kc.F11,         kc.F11,   kc.F4,    kc.F5,    kc.F6,    fk.RESET, TTTTTTTT, 
       TTTTTTTT, XXXXXXXX, kc.F1,    kc.F2,    kc.F3,    kc.F10,         kc.F10,   kc.F1,    kc.F2,    kc.F3,    XXXXXXXX, TTTTTTTT, 
                           TTTTTTTT, TTTTTTTT, TTTTTTTT, MO _RISE,       MO _LOWR, TTTTTTTT, TTTTTTTT, TTTTTTTT,                     
     ],
