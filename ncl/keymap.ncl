@@ -87,10 +87,10 @@ let keymap = {
     ],
     # GAME
     [
-      TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT,       TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, 
-      TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT,       TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, 
-      TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT,       TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT, 
-                          XXXXXXXX, TTTTTTTT, TTTTTTTT, MO _GNUM,       TTTTTTTT, TTTTTTTT, TTTTTTTT, TTTTTTTT,                     
+      kc.TAB,   kc.Q,     kc.W,     kc.E,     kc.R,     kc.T,           kc.Y,     kc.U,     kc.I,     kc.O,     kc.P,     kc.ENT,     
+      md.lsft,  kc.A,     kc.S,     kc.D,     kc.F,     kc.G,           kc.H,     kc.J,     kc.K,     kc.L,     kc.SCLN,  kc.QUOT,     
+      md.lctl,  kc.Z,     kc.X,     kc.C,     kc.V,     kc.B,           kc.N,     kc.M,     kc.COMM,  kc.DOT,   kc.SLSH,  kc.DEL,     
+                          XXXXXXXX, md.lalt,  kc.SPC,   MO _GNUM,       MO _LOWR, kc.BSPC,  md.rsft,  md.ralt,                     
     ],
     # GNUM
     [
