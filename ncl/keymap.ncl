@@ -117,15 +117,15 @@ let keymap = {
     ],
     # FUNC
     [
-      TTTTTTTT, fk.BOOT,  kc.F7,    kc.F8,    kc.F9,    kc.F12,         kc.F12,   kc.F7,    kc.F8,    kc.F9,    fk.BOOT,  TTTTTTTT, 
-      TTTTTTTT, fk.RESET, kc.F4,    kc.F5,    kc.F6,    kc.F11,         kc.F11,   kc.F4,    kc.F5,    kc.F6,    fk.RESET, TTTTTTTT, 
-      TTTTTTTT, XXXXXXXX, kc.F1,    kc.F2,    kc.F3,    kc.F10,         kc.F10,   kc.F1,    kc.F2,    kc.F3,    XXXXXXXX, TTTTTTTT, 
+      TTTTTTTT, fk.BOOT,  ms.lsft,  ms.lalt,  ms.ralt,  ms.rsft,        kc.F12,   kc.F7,    kc.F8,    kc.F9,    fk.BOOT,  TTTTTTTT, 
+      TTTTTTTT, fk.RESET, ms.lctl,  ms.lgui,  ms.rgui,  ms.rctl,        kc.F11,   kc.F4,    kc.F5,    kc.F6,    fk.RESET, TTTTTTTT, 
+      TTTTTTTT, XXXXXXXX, XXXXXXXX, XXXXXXXX, XXXXXXXX, XXXXXXXX,       kc.F10,   kc.F1,    kc.F2,    kc.F3,    XXXXXXXX, TTTTTTTT, 
                           TTTTTTTT, TTTTTTTT, TTTTTTTT, MO _RISE,       MO _LOWR, TTTTTTTT, TTTTTTTT, TTTTTTTT,                     
     ],
     # AJST
     [
       TTTTTTTT, cu.E_IEX, cu.E_ACF, cu.E_LL,  cu.D_SHS, me.VOLU,        me.PREV,  kc.INS,   kc.PSCR,  kc.SCRL,  kc.PAUS,  TTTTTTTT, 
-      TTTTTTTT, kc.CAPS,  cu.E_OM,  cu.E_OF,  cu.D_MUT, me.VOLD,        me.PLAY,  TO _BASE, TO _GAME, ms.ralt,  kc.APP,   md.rsft, 
+      TTTTTTTT, kc.CAPS,  cu.E_OM,  cu.E_OF,  cu.D_MUT, me.VOLD,        me.PLAY,  TO _BASE, TO _GAME, XXXXXXXX, kc.APP,   md.rsft, 
       md.ralt,  kc.NUBS,  cu.E_ATI, cu.E_DEG, cu.D_SIL, me.MUTE,        me.NEXT,  cu.KVM1,  cu.KVM2,  XXXXXXXX, cu.E_IQM, md.rctl, 
                           md.lalt,  md.lsft,  TTTTTTTT, MO _RISE,       MO _LOWR, TTTTTTTT, md.rgui,  TTTTTTTT,                     
     ],
