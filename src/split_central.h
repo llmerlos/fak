@@ -2,7 +2,7 @@
 #define __SPLIT_CENTRAL_H__
 
 #include "key_event_queue.h"
-#include "ch552.h"
+#include "ch55x.h"
 
 #include <stdint.h>
 
@@ -21,6 +21,7 @@
 #define FUTURE_TYPE_NONE 0
 #define FUTURE_TYPE_HOLD_TAP 1
 #define FUTURE_TYPE_TAP_DANCE 2
+#define FUTURE_TYPE_TRANS_LAYER_EXIT 3
 
 typedef struct {
     uint8_t status;

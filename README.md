@@ -20,7 +20,13 @@ Besides that, I want to be able to make keyboard configurations **declaratively*
 
 ## Compatible hardware
 
-Currently, it has been tested on CH552T, CH552G. It hasn't been tested on CH552E but it should work. CH558 and CH559 will be supported soon to take advantage of their larger flash and memory.
+| Chip    | Status |
+|---------|--------|
+| CH552T  | ✅ Fully supported and tested |
+| CH552G  | ✅ Fully supported and tested |
+| CH552E  | 🟡 Not tested but likely functional |
+| CH559L  | 🚧 Partially working, WIP |
+| CH558L  | ❓ Not tested but should be the same as CH559L |
 
 # Getting started
 
@@ -41,7 +47,9 @@ If you use Nix, you can simply use the provided flake.
 1. `python fak.py flash`
 1. `python fak.py flash_p` for the peripheral side if you have a split
 
-**Note:** It is **recommended** you use `fak.py` instead of entering `meson` commands directly. The build system is streamlined such that Nickel automatically gives you the correct build options. However, Meson can't configure itself for this to work, and we wouldn't want to enter those build options manually everytime they change, so `fak.py` exists as a helper script that derives build options from Nickel then applies them to Meson.
+⚠️ Do **not** put .ncl files outside of the `ncl` directory. If you do, FAK won't pick up the changes you make in these files.
+
+ℹ️ It is **recommended** you use `fak.py` instead of entering `meson` commands directly. The build system is streamlined such that Nickel automatically gives you the correct build options. However, Meson can't configure itself for this to work, and we wouldn't want to enter those build options manually everytime they change, so `fak.py` exists as a helper script that derives build options from Nickel then applies them to Meson.
 
 **TL;DR:** Don't use Meson directly. `fak.py` is your friend. Makes life easy.
 
@@ -49,7 +57,7 @@ If you use Nix, you can simply use the provided flake.
 
 For easier setup, you can also use the provided Dev Container.
 
-1. Clone this repo
+1. Fork this repo
 1. Create a new codespace
 1. Wait for the environment to be loaded in the terminal (3-6 minutes) until you can enter commands
 
@@ -72,16 +80,23 @@ Check out the examples and see how keyboards and keymaps are defined in FAK, and
 
 Let me know if you're using FAK on a project and I'd be happy to add it here!
 
-- [MIAO by kilipan](https://github.com/kilipan/miao). Drop-in replacement CH552T MCU for the Seeed Studio XIAO series. Keeb Supply sells a production version of the Miao, which you can [purchase here](https://keeb.supply/products/miao). (Not affiliated/sponsored)
-- [CH552-44, CH552-48, CH552-48-LPR by rgoulter](https://github.com/rgoulter/keyboard-labs#ch552-44-low-budget-hand-solderable-pcb-in-bm40jj40-form-factor). Ortholinear keebs built on WeAct board and PCBA'd standalone CH552T.
-- [CH552-36 by rgoulter](https://github.com/rgoulter/keyboard-labs#ch552-36-low-budget-36-key-split-keyboard-with-smt-components). Split keyboard built on a sub-100x100 mm2 PCB with SMT components.
-- [Ch55p34 by doesntfazer](https://github.com/doesntfazer/Ch55p34-keyboard). 34-key column-staggered unibody keyboard with standalone CH552T.
+## Dev boards
+
+- [MIAO by kilipan](https://github.com/kilipan/miao). Drop-in replacement CH552T MCU for the Seeed Studio XIAO series. [Keeb Supply](https://keeb.supply/products/miao) and [Kiser Designs](https://kiserdesigns.bigcartel.com/product/miao) sell a production version of the Miao. (Not affiliated/sponsored)
+- [Partycrasher Micro by semickolon](https://oshwlab.com/kkpjfobj/partycrasher-micro). Drop-in replacement CH558L/CH559L MCU for the Pro Micro.
+- [Partycrasher Xiao by semickolon](https://oshwlab.com/kkpjfobj/parytcrasher-xiao). Drop-in replacement CH552T MCU for the Seeed Studio XIAO series.
+
+## Keyboards
+
+- [CH552-44, CH552-48, CH552-48-LPR by rgoulter](https://github.com/rgoulter/keyboard-labs#ch552-44-low-budget-hand-solderable-pcb-in-bm40jj40-form-factor). Ortholinears built on WeAct board and PCBA'd onboard CH552T.
+- [CH552-36 by rgoulter](https://github.com/rgoulter/keyboard-labs#ch552-36-low-budget-36-key-split-keyboard-with-smt-components). 36-key split built on a sub-100mm PCB. Onboard CH552T.
+- [Ch55p34 by doesntfazer](https://github.com/doesntfazer/Ch55p34-keyboard). 34-key column-staggered unibody. Onboard CH552T.
+- [idawgz32 by ChrisChrisLo](https://github.com/ChrisChrisLoLo/idawgz32). 32-key ultra-portable and ultra-affordable pocket keyboard. Onboard CH552T.
+- [Hexatana by Purox](https://git.imaginaerraum.de/Purox/hexatana). 36-key Katana-inspired keyboard designed around hexagonal keycaps. Onboard CH552T.
+- [0xPM by llmerlos](https://github.com/llmerlos/0xPM). 3x6+4 split ortholinear with USB-C interconnect. Onboard CH552T.
+- [The Endgame by OldMan6955](https://github.com/OldMan6955/The-ENDGAME-x-Miao). 36-key column-staggered unibody. Miao dev board.
 
 # Features
-
-## Layers
-
-Yep. Layers. Up to 32.
 
 ## Composable keycodes
 
@@ -94,12 +109,12 @@ tap.reg.kc.A
 # Ctrl-A
 tap.reg.kc.A & tap.reg.mod.lctl
 
-# Ctrl-A when tapped, Layer 1 (MO(1) in QMK) when held
+# Ctrl-A when tapped, Layer 1 (like MO(1) in QMK) when held
 # Both portions exist. This is a hold-tap.
-tap.reg.kc.A & tap.reg.mod.lctl & hold.reg.layer 1
+tap.reg.kc.A & tap.reg.mod.lctl & hold.reg.layer 1 & hold.reg.behavior {}
 
 # Ctrl-Shift-A when tapped, Layer 1 with Alt and Shift when held
-tap.reg.kc.A & tap.reg.mod.lctl & tap.reg.mod.lsft & hold.reg.layer 1 & hold.reg.mod.lalt & hold.reg.mod.lsft
+tap.reg.kc.A & tap.reg.mod.lctl & tap.reg.mod.lsft & hold.reg.layer 1 & hold.reg.mod.lalt & hold.reg.mod.lsft & hold.reg.behavior {}
 
 # Layer 1 when pressed/held
 # Only hold portion exists. This is not a hold-tap.
@@ -123,6 +138,24 @@ let mod = hold.reg.mod in
     ]
   ]
 }
+```
+
+## Layers
+
+Yep. Layers. Up to 32.
+
+```
+# Momentary layer (like MO in QMK)
+hold.reg.layer [0-31]
+
+# TG, like in QMK, toggles the layer on or off
+tap.layer.TG [0-31]
+
+# DF, roughly like in QMK, clears all layers except for the new specified default layer
+tap.layer.DF [0-31]
+
+# TO, like in QMK, turns the specified layer on, and clears all others except for the default layer
+tap.layer.TO [0-31]
 ```
 
 ## Complex hold-tap behaviors
@@ -281,7 +314,7 @@ Tired of holding shift for just one key? What about tapping shift then *only* th
 ```
 let sticky_shift = tap.sticky.mod.lsft in
 
-# It doesn't have to be just shift. You can mix and match mods as shown below.
+# It doesn't have to be just shift. You can combine mods as shown below.
 # When you press two sticky mods in a row, they get stacked or combined, waiting for the next key press.
 
 let sticky_gui_alt = tap.sticky.mod.lgui & tap.sticky.mod.lalt in
@@ -297,6 +330,24 @@ let best_shift_ever =
   & hold.reg.mod.lsft
   & hold.reg.behavior { ... }
 ```
+
+## Sticky layers
+
+Temporarily activates a layer until the next key press. Unlike sticky mods, sticky layers cannot be combined. That means you cannot press two sticky layers in a row and have both layers activate. Only the last pressed sticky layer takes effect. However, you can combine sticky mods and layer into one key.
+
+```
+# Activates layer 2 until next key press
+tap.sticky.layer 2
+
+# Activates layer 3 with Ctrl-Alt until next key press
+tap.sticky.layer 3 & tap.sticky.mod.lsft & tap.sticky.mod.lalt
+
+# Layer 4 on hold; Sticky layer 5 on tap
+hold.reg.layer 4 & tap.sticky.layer 5 & hold.reg.behavior { ... }
+```
+
+Limitations:
+- You cannot use layer 0 as sticky. Nickel won't stop you, but it won't work during operation. This shouldn't be a dealbreaker though. We normally use sticky layers whose layer index is higher than that of the default/base layer.
 
 ## Mouse keys
 
@@ -343,7 +394,7 @@ Yep. Caps word.
 ```
 tap.custom.fak.CWTG     # Caps word toggle
 tap.custom.fak.CWON     # Caps word on
-tap.custom.fak.CWOFF    # Caps word off
+tap.custom.fak.CWOF     # Caps word off
 ```
 
 ## Macros
@@ -393,7 +444,7 @@ let macro_send_string = fun str =>
 in
 
 let my_macro_1 = macro_send_string "fak yeah" in
-let my_macro_2 = macro_send_string "@gmail.com" in
+let my_macro_2 = macro_send_string "gmail.com" in
 ```
 
 As of writing, there are no checks enforced in Nickel to check if all your `press`es are eventually `release`d. That is, it's possible to leave your `press`es pressed even after the macro is fully done. Take note of this, especially if you have weird behavior after activating a macro. This is all because I honestly don't know if checks should even be enforced or if there are actual use cases for leaving keys pressed after a macro.
@@ -426,6 +477,29 @@ Now, conditional layers (such as 3 and 9 in the example above) are fully control
 ## Repeat key
 
 `tap.custom.fak.REP` repeats the last reported non-modifier keycode including modifiers when it was pressed. Basically, tapping a modifier like Ctrl alone will not be repeated by the repeat key, but Ctrl-A will be, since it has a non-modifier keycode (A).
+
+## Transparent layer exit
+
+A version of the transparent key that (1) deactivates the layer it is in, then (2) registers the key press. This is an alternative implementation to what's usually known as smart layers. There exists a tap variant `tap.tlex` and also a hold variant `hold.tlex { ... }` that takes in a hold-tap behavior. `tap.tlex` is fine for simple use cases, but for more advanced use cases, `hold.tlex` allows you to only exit the layer when held and do something else when tapped.
+
+```
+let XXXX = tap.none & hold.none in
+let kc = tap.reg.kc in
+let htb = { timeout_ms = 200 } in
+
+let layers = [
+  [ # Layer 0
+    kc.A, kc.B, kc.C, hold.reg.mod.lsft & tap.layer.TG 1 & hold.reg.behavior htb
+  ],
+  [ # Layer 1
+    tap.tlex, kc.N1, kc.N2, hold.tlex htb & kc.Z
+  ]
+] in
+```
+
+In the example above, we start with layer 0. We toggle layer 1 by tapping the last key. Pressing the first key invokes `tap.tlex` which results to the typing of "a". Pressing second and third keys after that will type "bc", not "12" which is what would happen if you used `tap.trans` instead that doesn't deactivate the layer it's in.
+
+Let's start over. We start with layer 0. Tap last key to toggle layer 1. Tapping last key will type "z", but holding it for at least 200ms will invoke `hold.tlex` which deactivates layer 1 and registers the same hold, resulting to holding of shift. While still keeping the last key held, pressing other keys will type "ABC" since layer 1 was deactivated and shift became held at the same time.
 
 ## Foolproof config
 

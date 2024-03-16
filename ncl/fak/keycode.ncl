@@ -54,6 +54,7 @@ let mod_ = fun K => let K = fun mod => K { mods."%{mod}" = true } in {
     },
     sticky = {
       mod = mod_ (K 'sticky),
+      layer = fun i => K 'sticky { layer = i },
     },
     layer = let K = fun i op => K 'layer { layer = i, operation = op } in {
       DF = fun i => K i 'df,
@@ -62,12 +63,12 @@ let mod_ = fun K => let K = fun mod => K { mods."%{mod}" = true } in {
     },
     custom = let K = fun t c => K 'custom { type = t, data.code = c } in {
       fak = let K = fun code => K 'fak code in {
-        RESET = K 0,
-        BOOT  = K 1,
-        CWON  = K 2,
-        CWOFF = K 3,
-        CWTG  = K 4,
-        REP   = K 5,
+        REST = K 0,
+        BOOT = K 1,
+        CWON = K 2,
+        CWOF = K 3,
+        CWTG = K 4,
+        REP  = K 5,
       },
       media = let K = fun code => K 'consumer code in {
         PLAY = K 205,
@@ -94,6 +95,7 @@ let mod_ = fun K => let K = fun mod => K { mods."%{mod}" = true } in {
         WH_D = K 13,
       },
     },
+    tlex = K 'transparent_layer_exit {},
     trans = K 'transparent {},
   },
   
@@ -107,6 +109,7 @@ let mod_ = fun K => let K = fun mod => K { mods."%{mod}" = true } in {
       mod = mod_ (K 'regular),
     },
     nop = fun b => K 'nop { behavior = b },
+    tlex = fun b => K 'transparent_layer_exit { behavior = b },
     trans = K 'transparent {}
   },
   

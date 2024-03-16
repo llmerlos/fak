@@ -80,7 +80,7 @@ let encode_modifiers = fun mods => std.array.reduce_left (+) (std.array.map (fun
 let encode_tappable = fun { type, data } => match {
   'none => 0,
   'regular => data.hid_code + util.bit.shift (encode_modifiers data.mods) 8,
-  'sticky => 160 + util.bit.shift (encode_modifiers data.mods) 8,
+  'sticky => 160 + (util.bit.shift (encode_modifiers data.mods) 8) + data.layer,
   'layer => 
     let op = match { 'df => 0, 'tog => 1, 'to => 2 } data.operation in
     192 + data.layer + util.bit.shift op 8,
@@ -97,22 +97,23 @@ let encode_tappable = fun { type, data } => match {
       'mouse => 3,
       'macro => 4,
     } data.type,
+  'transparent_layer_exit => 65534,
   'transparent => 65535
 } type in
 
-let encode_holdable = fun { type, data } is_hold_tap => match {
-  'none => 0,
-  'regular =>
-    (
-      if is_hold_tap then
-        util.bit.shift (util.array.index_of data.behavior _hold_tap_behaviors) 13
-      else 0
-    )
-    + util.bit.shift data.layer 8
-    + encode_modifiers data.mods,
-  'nop => 8191 + util.bit.shift (util.array.index_of data.behavior _hold_tap_behaviors) 13,
-  'transparent => 65535
-} type in
+let encode_holdable = fun { type, data } is_hold_tap =>
+  let behavior = fun data => util.bit.shift (util.array.index_of data.behavior _hold_tap_behaviors) 13 in
+  match {
+    'none => 0,
+    'regular =>
+      (if is_hold_tap then (behavior data) else 0)
+      + util.bit.shift data.layer 8
+      + encode_modifiers data.mods,
+    'nop => 8191 + behavior data,
+    'transparent_layer_exit => 8190 + behavior data,
+    'transparent => 65535
+  } type
+in
 
 let encode_hold_tap = fun { tap, hold } is_hold_tap =>
   encode_tappable tap
@@ -222,10 +223,15 @@ let _central_defines = {
   LAYER_COUNT = layer_count,
   DEBOUNCE_MS = kb.debounce_ms,
 
-  LAYER_TRANSPARENCY_ENABLE = std.array.any (fun kc => 
+  LAYER_TRANSPARENCY_ENABLE = layer_count > 1 && (std.array.any (fun kc => 
     kc.type == 'hold_tap
     && (kc.data.tap.type == 'transparent || kc.data.hold.type == 'transparent)
-  ) deep_keycodes,
+  ) deep_keycodes),
+
+  TRANS_LAYER_EXIT_ENABLE = layer_count > 1 && (std.array.any (fun kc => 
+    kc.type == 'hold_tap
+    && (kc.data.tap.type == 'transparent_layer_exit || kc.data.hold.type == 'transparent_layer_exit)
+  ) deep_keycodes),
 
   HOLD_TAP_ENABLE = std.array.length _hold_tap_behaviors > 0,
   HOLD_TAP_EAGER_ENABLE = std.array.any (fun b => b.eager_decision != 'none) _hold_tap_behaviors,
@@ -236,7 +242,7 @@ let _central_defines = {
 
   TAP_DANCE_ENABLE = std.array.any (fun kc => kc.type == 'tap_dance) keycodes,
 
-  STICKY_MODS_ENABLE = std.array.any (fun kc => kc.type == 'hold_tap && kc.data.tap.type == 'sticky) deep_keycodes,
+  STICKY_ENABLE = std.array.any (fun kc => kc.type == 'hold_tap && kc.data.tap.type == 'sticky) deep_keycodes,
 
   CUSTOM_KEYS_ENABLE = is_custom_keys_used,
   FAK_KEYS_ENABLE = is_custom_keys_of_type_used 'fak,
@@ -295,6 +301,7 @@ let _xaddr_sizes = let
       let name = "USB_EP%{std.to_string i}_SIZE" in
       let padding = 2 in
       _central_defines."%{name}" + padding,
+    int8_t = 1,
     uint8_t = 1,
     uint16_t = 2,
     uint32_t = 4,
@@ -315,6 +322,8 @@ in {
 }
 & util.record.only_if _central_defines.MOUSE_KEYS_ENABLE {
   USB_EP3 = sizeof.usb_ep 3,
+  MOUSE_SCROLL_DIRECTION = sizeof.int8_t,
+  MOUSE_SCROLL_AT_TIME = sizeof.uint16_t,
 }
 & util.record.only_if (layer_count > 1) (
   let sizeof = sizeof & {
@@ -344,9 +353,10 @@ in {
     COMBO_KEY_QUEUE = sizeof.uint8_t + (sizeof.fak_combo_key_queue_entry_t * _central_defines.COMBO_KEY_QUEUE_LEN),
   }
 )
-& util.record.only_if _central_defines.STICKY_MODS_ENABLE {
+& util.record.only_if _central_defines.STICKY_ENABLE {
   PENDING_STICKY_MODS = sizeof.uint8_t,
   APPLIED_STICKY_MODS = sizeof.uint8_t,
+  APPLIED_STICKY_LAYER = sizeof.uint8_t,
 }
 & util.record.only_if _central_defines.REPEAT_KEY_ENABLE {
   REPEAT_KEY = sizeof.uint8_t * 4,
@@ -365,6 +375,11 @@ let _xaddr_defines =
 in
 
 let _defines = {
+  CH55X = match {
+    'CH552 => 2,
+    'CH559 => 9,
+  } kb.mcu.family,
+
   SPLIT_ENABLE = side != 'self,
   SPLIT_SIDE_CENTRAL = side != 'peripheral,
   SPLIT_SIDE_PERIPHERAL = side == 'peripheral,
@@ -406,45 +421,56 @@ let encode_combo = fun combo => {
 } in
 
 let Kscan = std.contract.from_predicate (fun k =>
-  let all_used_pins = k.ins @ k.outs @ feature_pins_used in
+  let all_used_pins = k.ins @ k.cols @ k.rows @ feature_pins_used in
   (util.array.unique all_used_pins) == all_used_pins
 ) in
 
 let rec _kscan | Kscan = 
-  let index_of_in = fun in_pin => util.array.index_of in_pin _kscan.ins in
-  let index_of_out = fun out_pin => util.array.index_of out_pin _kscan.outs in
+  let index_of_in = fun pin => util.array.index_of pin _kscan.ins in
+  let index_of_col = fun pin => util.array.index_of pin _kscan.cols in
+  let index_of_row = fun pin => util.array.index_of pin _kscan.rows in
 {
-  ins = kb.matrix.cols
-    @ (kb.keys
-      |> std.array.filter (fun k => k.type == 'direct)
-      |> std.array.map (fun k => k.data)
-    ),
-  outs = kb.matrix.rows,
+  ins = kb.keys
+    |> std.array.filter (fun k => k.type == 'direct)
+    |> std.array.map (fun k => k.data),
+  cols = kb.matrix.cols,
+  rows = kb.matrix.rows,
   matrix = {
-    ins = std.array.map index_of_in kb.matrix.cols,
-    outs = std.array.map index_of_out kb.matrix.rows,
+    cols = std.array.map index_of_col kb.matrix.cols,
+    rows = std.array.map index_of_row kb.matrix.rows,
     mapping =
-      let force_check = std.array.any (fun k =>
-        k.type == 'matrix 
-        && k.data.col >= 0 
-        && k.data.row >= 0
-      ) kb.keys in
-      if force_check then (
-        std.array.generate (
-          fun row => std.array.generate (
-            fun col =>
-              let k = {
-                type = 'matrix,
-                data.col = col,
-                data.row = row,
-              } in
-              if std.array.elem k kb.keys then
-                util.array.index_of k kb.keys
-              else
-                -1
-          ) (std.array.length ins)
-        ) (std.array.length outs)
-      ) else [],
+      let gen_mapping = fun direction =>
+        let force_check = std.array.any (fun k =>
+          k.type == 'matrix 
+          && k.data.col >= 0 
+          && k.data.row >= 0
+        ) kb.keys in
+
+        let ins =  if direction == 'col_to_row then cols else rows in
+        let outs = if direction == 'col_to_row then rows else cols in
+
+        if force_check then (
+          std.array.generate (
+            fun _out => std.array.generate (
+              fun _in =>
+                let k = {
+                  type = 'matrix,
+                  data.col = if direction == 'col_to_row then _in else _out,
+                  data.row = if direction == 'col_to_row then _out else _in,
+                  data.direction = direction,
+                } in
+                if std.array.elem k kb.keys then
+                  util.array.index_of k kb.keys
+                else
+                  -1
+            ) (std.array.length ins)
+          ) (std.array.length outs)
+        ) else []
+      in
+      {
+        col_to_row = gen_mapping 'col_to_row,
+        row_to_col = gen_mapping 'row_to_col,
+      } 
   },
   direct = kb.keys
     |> util.array.enumerate
