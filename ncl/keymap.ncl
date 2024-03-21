@@ -118,7 +118,7 @@ let keymap = {
     # FUNC
     [
       TTTTTTTT, fk.BOOT,  ms.lsft,  ms.lalt,  ms.ralt,  ms.rsft,        kc.F12,   kc.F7,    kc.F8,    kc.F9,    fk.BOOT,  TTTTTTTT, 
-      TTTTTTTT, fk.RESET, ms.lctl,  ms.lgui,  ms.rgui,  ms.rctl,        kc.F11,   kc.F4,    kc.F5,    kc.F6,    fk.RESET, TTTTTTTT, 
+      TTTTTTTT, fk.REST,  ms.lctl,  ms.lgui,  ms.rgui,  ms.rctl,        kc.F11,   kc.F4,    kc.F5,    kc.F6,    fk.REST,  TTTTTTTT, 
       TTTTTTTT, XXXXXXXX, XXXXXXXX, XXXXXXXX, XXXXXXXX, XXXXXXXX,       kc.F10,   kc.F1,    kc.F2,    kc.F3,    XXXXXXXX, TTTTTTTT, 
                           TTTTTTTT, TTTTTTTT, TTTTTTTT, MO _RISE,       MO _LOWR, TTTTTTTT, TTTTTTTT, TTTTTTTT,                     
     ],
